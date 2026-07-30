@@ -1,0 +1,136 @@
+// GameServerFinder — data model
+// Provider is PostgreSQL (Neon / Vercel Postgres / Supabase all work unchanged).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Prisma 7: the connection URL lives in prisma.config.ts (for migrate) and is
+// passed to PrismaClient via the pg driver adapter (for queries).
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Auth.js (NextAuth v5) models — required shape for @auth/prisma-adapter
+// ---------------------------------------------------------------------------
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+
+  accounts Account[]
+  sessions Session[]
+  listings Listing[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ---------------------------------------------------------------------------
+// Listings
+// ---------------------------------------------------------------------------
+
+enum Game {
+  DAYZ
+  FIVEM
+  MINECRAFT
+  RUST
+}
+
+/// Where the metal lives. US and UK are the two the brief calls out; EU and
+/// OTHER exist so the data isn't forced to lie about servers hosted elsewhere.
+enum Region {
+  US
+  UK
+  EU
+  OTHER
+}
+
+/// "Serious RP or shooter" is the headline split. SEMI_SERIOUS_RP, SURVIVAL and
+/// CASUAL cover the DayZ / Rust / Minecraft listings that fit neither cleanly.
+enum Playstyle {
+  SERIOUS_RP
+  SEMI_SERIOUS_RP
+  SHOOTER
+  SURVIVAL
+  CASUAL
+}
+
+enum ListingStatus {
+  DRAFT
+  PUBLISHED
+  HIDDEN
+}
+
+model Listing {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  name        String
+  tagline     String
+  description String
+  game        Game
+  region      Region
+  playstyle   Playstyle
+  pvp         Boolean       @default(false)
+  /// FiveM-only. Null on every other game — the form hides the control and the
+  /// server action strips any value that arrives for a non-FiveM listing.
+  drugs       Boolean?
+  avgPlayers  Int
+  maxPlayers  Int?
+  imageUrl    String?
+  imageAlt    String?
+  connectUrl  String?
+  websiteUrl  String?
+  discordUrl  String?
+  status      ListingStatus @default(PUBLISHED)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([game, status])
+  @@index([region])
+  @@index([ownerId])
+  @@index([createdAt])
+}

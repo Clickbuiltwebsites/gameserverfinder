@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="Abstract isometric stack of blocks in warm and cool tones">
+  <defs>
+    <linearGradient id="mc-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c1913"/>
+      <stop offset="1" stop-color="#14100d"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="750" fill="url(#mc-sky)"/>
+
+  <!-- Isometric block: top face, left face, right face.
+       Unit is 90 wide, 52 half-height. -->
+  <g>
+    <!-- back row -->
+    <g transform="translate(510 210)">
+      <path d="M0 0 L90 52 L0 104 L-90 52 Z" fill="#3a3128"/>
+      <path d="M-90 52 L0 104 L0 190 L-90 138 Z" fill="#231d17"/>
+      <path d="M90 52 L0 104 L0 190 L90 138 Z" fill="#1a1611"/>
+    </g>
+    <g transform="translate(690 314)">
+      <path d="M0 0 L90 52 L0 104 L-90 52 Z" fill="#332b22"/>
+      <path d="M-90 52 L0 104 L0 190 L-90 138 Z" fill="#211b15"/>
+      <path d="M90 52 L0 104 L0 190 L90 138 Z" fill="#181410"/>
+    </g>
+    <g transform="translate(330 314)">
+      <path d="M0 0 L90 52 L0 104 L-90 52 Z" fill="#332b22"/>
+      <path d="M-90 52 L0 104 L0 190 L-90 138 Z" fill="#211b15"/>
+      <path d="M90 52 L0 104 L0 190 L90 138 Z" fill="#181410"/>
+    </g>
+
+    <!-- accent block, raised -->
+    <g transform="translate(510 366)">
+      <path d="M0 0 L90 52 L0 104 L-90 52 Z" fill="#f0a259"/>
+      <path d="M-90 52 L0 104 L0 190 L-90 138 Z" fill="#b8763a"/>
+      <path d="M90 52 L0 104 L0 190 L90 138 Z" fill="#7d4f26"/>
+    </g>
+
+    <!-- front row -->
+    <g transform="translate(330 470)">
+      <path d="M0 0 L90 52 L0 104 L-90 52 Z" fill="#2c251d"/>
+      <path d="M-90 52 L0 104 L0 190 L-90 138 Z" fill="#1d1813"/>
+      <path d="M90 52 L0 104 L0 190 L90 138 Z" fill="#15110e"/>
+    </g>
+    <g transform="translate(690 470)">
+      <path d="M0 0 L90 52 L0 104 L-90 52 Z" fill="#2c251d"/>
+      <path d="M-90 52 L0 104 L0 190 L-90 138 Z" fill="#1d1813"/>
+      <path d="M90 52 L0 104 L0 190 L90 138 Z" fill="#15110e"/>
+    </g>
+    <g transform="translate(870 366)">
+      <path d="M0 0 L90 52 L0 104 L-90 52 Z" fill="#2c251d"/>
+      <path d="M-90 52 L0 104 L0 190 L-90 138 Z" fill="#1d1813"/>
+      <path d="M90 52 L0 104 L0 190 L90 138 Z" fill="#15110e"/>
+    </g>
+    <g transform="translate(150 366)">
+      <path d="M0 0 L90 52 L0 104 L-90 52 Z" fill="#2c251d"/>
+      <path d="M-90 52 L0 104 L0 190 L-90 138 Z" fill="#1d1813"/>
+      <path d="M90 52 L0 104 L0 190 L90 138 Z" fill="#15110e"/>
+    </g>
+  </g>
+
+  <!-- Floating single block -->
+  <g transform="translate(510 90)" opacity="0.55">
+    <path d="M0 0 L52 30 L0 60 L-52 30 Z" fill="#3a3128"/>
+    <path d="M-52 30 L0 60 L0 110 L-52 80 Z" fill="#231d17"/>
+    <path d="M52 30 L0 60 L0 110 L52 80 Z" fill="#1a1611"/>
+  </g>
+</svg>

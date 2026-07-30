@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="Abstract cold horizon with pine silhouettes and bands of fog">
+  <defs>
+    <linearGradient id="dayz-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b1a17"/>
+      <stop offset="0.62" stop-color="#2b2a24"/>
+      <stop offset="1" stop-color="#14100d"/>
+    </linearGradient>
+    <linearGradient id="dayz-fog" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a49a91" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#a49a91" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="750" fill="url(#dayz-sky)"/>
+
+  <!-- Cold low sun -->
+  <circle cx="880" cy="330" r="52" fill="#b8763a" opacity="0.28"/>
+  <circle cx="880" cy="330" r="22" fill="#f0a259" opacity="0.4"/>
+
+  <!-- Distant ridge -->
+  <path d="M0 470 L150 430 L300 462 L470 412 L640 458 L820 420 L1000 456 L1200 424 L1200 750 L0 750 Z" fill="#22201b"/>
+
+  <!-- Fog band over the ridge -->
+  <rect x="0" y="430" width="1200" height="90" fill="url(#dayz-fog)"/>
+
+  <!-- Pine treeline, mid -->
+  <g fill="#1a1815">
+    <path d="M90 560 L112 470 L134 560 Z"/><path d="M150 566 L168 496 L186 566 Z"/>
+    <path d="M210 556 L234 462 L258 556 Z"/><path d="M280 570 L296 508 L312 570 Z"/>
+    <path d="M340 558 L362 470 L384 558 Z"/><path d="M410 566 L428 500 L446 566 Z"/>
+    <path d="M480 552 L506 452 L532 552 Z"/><path d="M560 568 L576 504 L592 568 Z"/>
+    <path d="M620 558 L642 472 L664 558 Z"/><path d="M700 566 L718 498 L736 566 Z"/>
+    <path d="M770 554 L794 460 L818 554 Z"/><path d="M850 570 L866 510 L882 570 Z"/>
+    <path d="M910 558 L932 468 L954 558 Z"/><path d="M990 564 L1008 496 L1026 564 Z"/>
+    <path d="M1060 552 L1086 454 L1112 552 Z"/><path d="M1140 568 L1158 502 L1176 568 Z"/>
+  </g>
+
+  <!-- Second fog band, lower -->
+  <rect x="0" y="540" width="1200" height="70" fill="url(#dayz-fog)"/>
+
+  <!-- Foreground pines, taller and darker -->
+  <g fill="#100d0a">
+    <path d="M40 750 L90 540 L140 750 Z"/>
+    <path d="M250 750 L296 578 L342 750 Z"/>
+    <path d="M600 750 L648 552 L696 750 Z"/>
+    <path d="M950 750 L1000 566 L1050 750 Z"/>
+  </g>
+
+  <!-- Ground -->
+  <rect x="0" y="700" width="1200" height="50" fill="#0d0b09"/>
+</svg>

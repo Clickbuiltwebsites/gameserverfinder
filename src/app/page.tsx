@@ -1,65 +1,136 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ServerCard } from "@/components/server-card";
+import { countsByGame, listListings } from "@/lib/repo";
+import { GAMES, GAME_BLURB, GAME_LABEL, formatPlayers } from "@/lib/taxonomy";
 
-export default function Home() {
+/**
+ * This page reads no request-time API, so Next would otherwise prerender it once
+ * at build and serve that snapshot forever. Publishing a listing calls
+ * revalidatePath("/"), and this is the safety net for anything that changes the
+ * table without going through the app (a seed, a manual edit, a moderation tool).
+ */
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const [all, counts] = await Promise.all([listListings(), countsByGame()]);
+
+  const newest = all.slice(0, 3);
+  const busiest = [...all].sort((a, b) => b.avgPlayers - a.avgPlayers).slice(0, 3);
+  const total = all.length;
+  const ukCount = all.filter((l) => l.region === "UK").length;
+  const usCount = all.filter((l) => l.region === "US").length;
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      <section className="hero">
+        <div className="shell hero__grid">
+          <div>
+            <h1 className="hero__title">Four games. Filters that mean something.</h1>
+            <p className="hero__lede">
+              DayZ, FiveM, Minecraft and Rust. Narrow by region, by playstyle, by whether PvP is
+              on — and on FiveM, by whether the economy runs on drugs. Every description is
+              written by the person who runs the server.
+            </p>
+            <div className="hero__actions">
+              <Link className="btn btn--primary" href="/servers">
+                Browse servers
+              </Link>
+              <Link className="btn" href="/submit">
+                List your server
+              </Link>
+            </div>
+          </div>
+
+          {/* Counts, not claims — each one is computed from the listings table. */}
+          <dl className="hero__counts">
+            <div>
+              <dd className="count__value tabular">{formatPlayers(total)}</dd>
+              <dt className="count__label">Servers listed</dt>
+            </div>
+            <div>
+              <dd className="count__value tabular">{GAMES.length}</dd>
+              <dt className="count__label">Games covered</dt>
+            </div>
+            <div>
+              <dd className="count__value tabular">{formatPlayers(usCount)}</dd>
+              <dt className="count__label">US-hosted</dt>
+            </div>
+            <div>
+              <dd className="count__value tabular">{formatPlayers(ukCount)}</dd>
+              <dt className="count__label">UK-hosted</dt>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section className="shell rail">
+        <div className="rail__head">
+          <h2 className="rail__title">Just listed</h2>
+          <Link className="link-arrow" href="/servers">
+            All servers →
+          </Link>
+        </div>
+        {newest.length ? (
+          <div className="grid">
+            {newest.map((listing, index) => (
+              <ServerCard key={listing.id} listing={listing} index={index} />
+            ))}
+          </div>
+        ) : (
+          <EmptyRail />
+        )}
+      </section>
+
+      <section className="shell rail rail--tight">
+        <div className="rail__head">
+          <h2 className="rail__title">By game</h2>
+          <p className="rail__note">
+            Each game gets its own filters. FiveM is the only one that asks about drugs.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="games">
+          {GAMES.map((game) => (
+            <Link key={game} className="game-card" href={`/servers?game=${game}`}>
+              <h3 className="game-card__name">{GAME_LABEL[game]}</h3>
+              <p className="game-card__blurb">{GAME_BLURB[game]}</p>
+              <span className="game-card__count tabular">
+                {counts[game]} {counts[game] === 1 ? "server" : "servers"}
+              </span>
+            </Link>
+          ))}
         </div>
-      </main>
+      </section>
+
+      {busiest.length ? (
+        <section className="shell rail">
+          <div className="rail__head">
+            <h2 className="rail__title">Highest average population</h2>
+            <Link className="link-arrow" href="/servers?sort=players">
+              Sort the full list →
+            </Link>
+          </div>
+          <div className="grid">
+            {busiest.map((listing, index) => (
+              <ServerCard key={listing.id} listing={listing} index={index} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+    </>
+  );
+}
+
+function EmptyRail() {
+  return (
+    <div className="empty">
+      <h3 className="empty__title">No servers listed yet.</h3>
+      <p className="empty__body">
+        Listings come from the people who run the servers. If you run one, put it here — it takes
+        about two minutes and you keep control of the description.
+      </p>
+      <Link className="btn btn--primary" href="/submit">
+        List a server
+      </Link>
     </div>
   );
 }
