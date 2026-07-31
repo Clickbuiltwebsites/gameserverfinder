@@ -1,30 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="Abstract cold horizon with pine silhouettes and bands of fog">
   <defs>
     <linearGradient id="dayz-sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#1b1a17"/>
-      <stop offset="0.62" stop-color="#2b2a24"/>
-      <stop offset="1" stop-color="#14100d"/>
+      <stop offset="0" stop-color="#0e0e0d"/>
+      <stop offset="0.62" stop-color="#1d1d1c"/>
+      <stop offset="1" stop-color="#070707"/>
     </linearGradient>
     <linearGradient id="dayz-fog" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#a49a91" stop-opacity="0.22"/>
-      <stop offset="1" stop-color="#a49a91" stop-opacity="0"/>
+      <stop offset="0" stop-color="#8f8f8c" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#8f8f8c" stop-opacity="0"/>
     </linearGradient>
   </defs>
 
   <rect width="1200" height="750" fill="url(#dayz-sky)"/>
 
   <!-- Cold low sun -->
-  <circle cx="880" cy="330" r="52" fill="#b8763a" opacity="0.28"/>
-  <circle cx="880" cy="330" r="22" fill="#f0a259" opacity="0.4"/>
+  <circle cx="880" cy="330" r="52" fill="#9c6a33" opacity="0.28"/>
+  <circle cx="880" cy="330" r="22" fill="#e2a163" opacity="0.4"/>
 
   <!-- Distant ridge -->
-  <path d="M0 470 L150 430 L300 462 L470 412 L640 458 L820 420 L1000 456 L1200 424 L1200 750 L0 750 Z" fill="#22201b"/>
+  <path d="M0 470 L150 430 L300 462 L470 412 L640 458 L820 420 L1000 456 L1200 424 L1200 750 L0 750 Z" fill="#151514"/>
 
   <!-- Fog band over the ridge -->
   <rect x="0" y="430" width="1200" height="90" fill="url(#dayz-fog)"/>
 
   <!-- Pine treeline, mid -->
-  <g fill="#1a1815">
+  <g fill="#0c0c0b">
     <path d="M90 560 L112 470 L134 560 Z"/><path d="M150 566 L168 496 L186 566 Z"/>
     <path d="M210 556 L234 462 L258 556 Z"/><path d="M280 570 L296 508 L312 570 Z"/>
     <path d="M340 558 L362 470 L384 558 Z"/><path d="M410 566 L428 500 L446 566 Z"/>
@@ -39,7 +39,7 @@
   <rect x="0" y="540" width="1200" height="70" fill="url(#dayz-fog)"/>
 
   <!-- Foreground pines, taller and darker -->
-  <g fill="#100d0a">
+  <g fill="#050505">
     <path d="M40 750 L90 540 L140 750 Z"/>
     <path d="M250 750 L296 578 L342 750 Z"/>
     <path d="M600 750 L648 552 L696 750 Z"/>
@@ -47,5 +47,5 @@
   </g>
 
   <!-- Ground -->
-  <rect x="0" y="700" width="1200" height="50" fill="#0d0b09"/>
+  <rect x="0" y="700" width="1200" height="50" fill="#040404"/>
 </svg>

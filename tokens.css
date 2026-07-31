@@ -31,35 +31,48 @@
   --track-heading: -0.03em;
   --track-label: 0.09em;
 
-  /* -- Colour — Midnight, anchor hue 55–62 (warm amber) ------------------ */
-  /* Surfaces climb by lightness. With most hairline borders removed, this step
-     is what separates a card from the page, so keep the gaps between them. */
-  --color-paper: oklch(15% 0.012 55);
-  --color-paper-2: oklch(21% 0.014 55);
-  --color-paper-3: oklch(26% 0.016 55);
-  --color-paper-4: oklch(31% 0.016 55);
+  /* -- Colour — Midnight, black canvas, amber anchor (hue 60–66) ---------
+     The page is black — #020201 as rendered. The 0.002 chroma is a whisper,
+     enough that the black is a colour someone chose rather than an absence of
+     one, and invisible as a hue.
+
+     The step from paper to paper-2 is the whole reason a card is visible, and
+     on a black canvas it is easy to lose. It measures 1.17:1; below about 1.12
+     the cards start dissolving into the page. Check it after any change here.
+
+     Surfaces climb by lightness. With most hairline borders gone, this ladder
+     is the only thing separating a card from the page — keep the steps. */
+  --color-paper: oklch(8% 0.002 60);
+  --color-paper-2: oklch(21% 0.006 60);
+  --color-paper-3: oklch(26% 0.007 60);
+  --color-paper-4: oklch(31% 0.008 60);
 
   /* --color-rule is decorative (dividers, card edges).
      --color-rule-2 bounds interactive controls, so it is tuned to clear WCAG
      1.4.11's 3:1 against --color-paper-2. Don't darken it without re-checking. */
-  --color-rule: oklch(31% 0.012 55);
-  --color-rule-2: oklch(54% 0.014 55);
+  --color-rule: oklch(29% 0.006 60);
+  /* 55%: rule-2 also bounds the search pill in its hover state, which sits on
+     paper-3, and 53% missed 3:1 there. Tuned against the lightest surface it
+     ever appears on, not the darkest. */
+  --color-rule-2: oklch(55% 0.009 60);
 
-  /* 67%, not 64%: --color-neutral is read on paper-3 in the card hover state,
-     where the lower value cleared 4.5:1 by too little to survive future edits. */
-  --color-neutral: oklch(67% 0.011 55);
-  --color-muted: oklch(76% 0.009 55);
-  --color-ink-2: oklch(86% 0.008 55);
-  --color-ink: oklch(96% 0.006 55);
+  --color-neutral: oklch(66% 0.008 60);
+  --color-muted: oklch(76% 0.006 60);
+  --color-ink-2: oklch(86% 0.005 60);
+  /* 94%, not pure white. Full white on black smears at small sizes. */
+  --color-ink: oklch(94% 0.004 60);
 
-  --color-accent: oklch(76% 0.163 62);
-  --color-accent-dim: oklch(58% 0.132 62);
+  /* Amber stays — it is the brand. Chroma comes down from 0.163 to 0.125:
+     against a black field the old value glowed, and a glowing accent on black
+     is the single most template-looking thing a dark UI can do. */
+  --color-accent: oklch(74% 0.125 66);
+  --color-accent-dim: oklch(56% 0.098 66);
   /* Text colour for anything sitting ON an accent fill. Verified ≥ 7:1. */
-  --color-accent-ink: oklch(17% 0.035 62);
-  --color-focus: oklch(80% 0.155 62);
+  --color-accent-ink: oklch(14% 0.028 66);
+  --color-focus: oklch(78% 0.128 66);
 
-  --color-danger: oklch(66% 0.185 25);
-  --color-ok: oklch(74% 0.135 152);
+  --color-danger: oklch(64% 0.152 25);
+  --color-ok: oklch(72% 0.112 152);
 
   /* -- Space — 4pt scale ------------------------------------------------- */
   --space-3xs: 0.125rem;

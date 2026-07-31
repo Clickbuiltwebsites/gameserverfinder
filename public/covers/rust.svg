@@ -1,34 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="Abstract riveted metal plates in rust and ember tones">
   <defs>
     <linearGradient id="rust-base" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#221a14"/>
-      <stop offset="1" stop-color="#14100d"/>
+      <stop offset="0" stop-color="#141413"/>
+      <stop offset="1" stop-color="#070707"/>
     </linearGradient>
     <linearGradient id="rust-plate" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#33281f"/>
-      <stop offset="1" stop-color="#241c16"/>
+      <stop offset="0" stop-color="#232322"/>
+      <stop offset="1" stop-color="#171716"/>
     </linearGradient>
     <linearGradient id="rust-weld" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#b8763a" stop-opacity="0"/>
-      <stop offset="0.45" stop-color="#f0a259" stop-opacity="0.7"/>
-      <stop offset="1" stop-color="#b8763a" stop-opacity="0"/>
+      <stop offset="0" stop-color="#9c6a33" stop-opacity="0"/>
+      <stop offset="0.45" stop-color="#e2a163" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#9c6a33" stop-opacity="0"/>
     </linearGradient>
   </defs>
 
   <rect width="1200" height="750" fill="url(#rust-base)"/>
 
   <!-- Plate wall -->
-  <g stroke="#0f0c0a" stroke-width="4">
+  <g stroke="#050505" stroke-width="4">
     <rect x="40" y="60" width="360" height="300" fill="url(#rust-plate)"/>
-    <rect x="410" y="60" width="360" height="300" fill="#2b221a"/>
+    <rect x="410" y="60" width="360" height="300" fill="#1c1c1b"/>
     <rect x="780" y="60" width="380" height="300" fill="url(#rust-plate)"/>
-    <rect x="40" y="370" width="360" height="320" fill="#2b221a"/>
+    <rect x="40" y="370" width="360" height="320" fill="#1c1c1b"/>
     <rect x="410" y="370" width="360" height="320" fill="url(#rust-plate)"/>
-    <rect x="780" y="370" width="380" height="320" fill="#2b221a"/>
+    <rect x="780" y="370" width="380" height="320" fill="#1c1c1b"/>
   </g>
 
   <!-- Rivets, on plate corners -->
-  <g fill="#4a3b2d">
+  <g fill="#383835">
     <circle cx="70" cy="90" r="7"/><circle cx="370" cy="90" r="7"/>
     <circle cx="70" cy="330" r="7"/><circle cx="370" cy="330" r="7"/>
     <circle cx="440" cy="90" r="7"/><circle cx="740" cy="90" r="7"/>
@@ -44,7 +44,7 @@
   </g>
 
   <!-- Corrosion patches -->
-  <g fill="#7d4f26" opacity="0.28">
+  <g fill="#6b4a24" opacity="0.28">
     <path d="M470 130 q60 -30 110 10 q40 40 -10 80 q-70 40 -110 -20 Z"/>
     <path d="M870 470 q80 -20 120 40 q20 60 -60 70 q-90 0 -80 -60 Z"/>
     <path d="M120 500 q50 -40 90 0 q30 50 -30 70 q-60 10 -60 -40 Z"/>

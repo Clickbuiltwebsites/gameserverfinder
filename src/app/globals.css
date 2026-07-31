@@ -6,14 +6,15 @@
  * nav: N13 inline ⌘K search pill · footer: Ft5 Statement
  * features: F6 product card grid (ratio 16/10, density 3-up, micro-action: none)
  * section heads: S2 Hanging · CTA: C1 Outlined chip (rect, spacious, arrow)
- * enrichment: canvas only — one warm bloom + 3.5% grain; the server pictures
- *   are the imagery and nothing competes with them
+ * enrichment: none — black canvas, no blooms, no grain. The server pictures
+ *   are the only light in the composition and nothing competes with them.
  * motion: page-reveal (one-shot, sections not cards) · media-scale on hover ·
  *   palette-highlight  [3 primitives]
  * tone: technical · audience: players hunting a server · use: find one, or list yours
  *
- * Modernisation pass — the load-bearing decisions, so nobody undoes them by
- * accident:
+ * Load-bearing decisions, so nobody undoes them by accident:
+ *   · The canvas is black (5% L) and carries nothing. No gradient glow, no
+ *     grain. Depth lives in the surface ladder, never painted over the page.
  *   · Surfaces climb by lightness; borders are for interactive edges only. A
  *     hairline on every box is what made this read as a grid of containers.
  *   · The media well is DARKER than the card face. A recess lit brighter than
@@ -36,7 +37,7 @@ html {
 body {
   overflow-x: clip;
   margin: 0;
-  background: transparent;
+  background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-body);
   font-size: var(--text-base);
@@ -50,42 +51,18 @@ body {
 }
 
 /* --- Canvas -----------------------------------------------------------------
-   The page had no light source at all, which is what made a dark theme read
-   flat. This is one warm bloom high on the canvas plus a second, weaker one
-   opposite it — fixed, so they behave like room lighting rather than a decal
-   that scrolls with the content. Two stops, low alpha, no animation: the
-   opposite of an aurora mesh.
+   Nothing. The canvas is black and stays black.
+
+   This deliberately removes the two radial blooms and the grain layer that used
+   to live here. A dark page with warm glows bleeding from the corners is the
+   most recognisable "generated dark landing page" signature there is, and the
+   glow was doing the work that the type, the spacing and the photography should
+   be doing. On a black field the server pictures are now the only light in the
+   composition, which is the correct hierarchy for a directory.
+
+   If depth is ever wanted back, it belongs in the surface ladder
+   (--color-paper-2 upward), not in a gradient painted over the page.
    -------------------------------------------------------------------------- */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(60rem 34rem at 15% -10%, oklch(76% 0.163 62 / 0.11), transparent 62%),
-    radial-gradient(44rem 26rem at 95% 0%, oklch(64% 0.12 28 / 0.05), transparent 64%);
-}
-
-/* Fine grain. A print-derived texture that stops large dark areas from banding;
-   at 3.5% it is felt rather than seen, and it does not date the way an effect
-   would. Hidden from anyone who has asked for less motion or more contrast. */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 170px 170px;
-}
-
-@media (prefers-contrast: more) {
-  body::after {
-    display: none;
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -181,8 +158,6 @@ img {
 }
 
 .page {
-  position: relative;
-  z-index: 1;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -757,18 +732,15 @@ img {
   }
 }
 
-/* Listings with no screenshot get a built placeholder, not a broken frame. */
+/* Listings with no screenshot get a built placeholder, not a broken frame.
+   Flat, not striped: a diagonal hatch was decoration standing in for content,
+   and on a black canvas the quiet empty well reads better than a pattern. */
 .card__fallback {
   width: 100%;
   height: 100%;
   display: grid;
   place-items: center;
-  background:
-    repeating-linear-gradient(
-      135deg,
-      var(--color-paper) 0 10px,
-      var(--color-paper-2) 10px 20px
-    );
+  background: var(--color-paper);
 }
 
 .card__fallback span {

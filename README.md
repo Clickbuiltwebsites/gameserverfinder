@@ -335,8 +335,8 @@ Generated fresh — nothing borrowed. Three artefacts:
 - **Dimensions** 1200 × 630 px (1.91:1) — the Facebook / X / LinkedIn / Discord
   standard. Renders at 1× PNG, ~70 KB.
 - **Safe area** 72 px padding on all sides; nothing meaningful within it.
-- **Background** `#14100d` (the Midnight paper token) with a warm amber glow
-  rising from the bottom edge, plus a 10 px accent rail down the left.
+- **Background** `#050505` (the black paper token), flat, with a 10 px accent
+  rail down the left edge as the only chroma besides the wordmark.
 - **Typography** Bricolage Grotesque ExtraBold for the headline (86 px, −3.6
   tracking, 1.02 leading); Geist Regular/SemiBold for supporting copy. The TTFs
   are committed under `src/assets/fonts/` so the render is deterministic and
@@ -372,8 +372,10 @@ easing. `globals.css` references them by name and never inlines a raw value, so
 the system stays portable — drop `tokens.css` into another project and the
 vocabulary comes with it.
 
-- **Palette** Midnight: `oklch(15% 0.012 55)` paper, warm amber accent at
-  `oklch(76% 0.163 62)`, neutrals tinted toward the same anchor hue.
+- **Palette** Midnight on a black canvas: `oklch(8% 0.002 60)` paper (renders
+  `#020201`), tempered amber accent at `oklch(74% 0.125 66)`, neutrals carrying
+  only a whisper of the anchor hue. The canvas is bare — no gradients anywhere
+  on any page.
 - **Type** Bricolage Grotesque (display) + Geist (body) + Geist Mono (player
   counts, tags, connect strings). Three families, which is the ceiling.
 - **Contrast** verified in-browser. Body text runs 8.5:1 to 17.5:1;

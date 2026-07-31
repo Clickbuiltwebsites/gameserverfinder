@@ -12,17 +12,18 @@ import { join } from "node:path";
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
 
+/** sRGB equivalents of the Midnight tokens — Satori supports no oklch(). */
 export const OG_COLOR = {
-  paper: "#14100d",
-  paper2: "#1e1913",
-  paper3: "#29221a",
-  rule: "#382f27",
-  neutral: "#a49a91",
-  muted: "#c9c1b8",
-  ink: "#f6f2ee",
-  accent: "#f0a259",
-  accentDim: "#b8763a",
-  accentInk: "#1a1006",
+  paper: "#050505",
+  paper2: "#141312",
+  paper3: "#1f1d1c",
+  rule: "#2a2827",
+  neutral: "#8f8b88",
+  muted: "#c2beba",
+  ink: "#efece9",
+  accent: "#e2a163",
+  accentDim: "#9c6a33",
+  accentInk: "#150e06",
 } as const;
 
 const FONT_DIR = join(process.cwd(), "src", "assets", "fonts");
@@ -76,21 +77,13 @@ export function OgWordmark() {
   );
 }
 
-/** Warm horizon glow across the bottom, matching the site's atmospheric ground. */
+/**
+ * Kept as a no-op so the two card layouts don't need restructuring. The site's
+ * canvas is flat black now, and the card follows it — the glow that used to sit
+ * here was the same generated-looking gradient the page itself dropped.
+ */
 export function OgGlow() {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        left: 0,
-        right: 0,
-        bottom: 0,
-        height: 300,
-        background: `linear-gradient(to top, ${OG_COLOR.accentDim}22, ${OG_COLOR.paper}00)`,
-        display: "flex",
-      }}
-    />
-  );
+  return null;
 }
 
 export function OgPill({ label, tone = "quiet" }: { label: string; tone?: "quiet" | "accent" }) {

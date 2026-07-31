@@ -1,26 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="Abstract city grid at night with light trails along the avenues">
   <defs>
     <linearGradient id="fivem-sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#241c15"/>
-      <stop offset="1" stop-color="#14100d"/>
+      <stop offset="0" stop-color="#171716"/>
+      <stop offset="1" stop-color="#070707"/>
     </linearGradient>
     <linearGradient id="fivem-trail" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#f0a259" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#f0a259" stop-opacity="0.85"/>
-      <stop offset="1" stop-color="#f0a259" stop-opacity="0"/>
+      <stop offset="0" stop-color="#e2a163" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#e2a163" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#e2a163" stop-opacity="0"/>
     </linearGradient>
   </defs>
 
   <rect width="1200" height="750" fill="url(#fivem-sky)"/>
 
   <!-- Skyline blocks, back to front -->
-  <g fill="#1e1913">
+  <g fill="#111110">
     <rect x="60" y="180" width="90" height="330"/>
     <rect x="170" y="240" width="70" height="270"/>
     <rect x="980" y="200" width="110" height="310"/>
     <rect x="880" y="270" width="80" height="240"/>
   </g>
-  <g fill="#29221a">
+  <g fill="#1b1b1a">
     <rect x="260" y="120" width="120" height="390"/>
     <rect x="400" y="210" width="95" height="300"/>
     <rect x="700" y="160" width="105" height="350"/>
@@ -29,7 +29,7 @@
   </g>
 
   <!-- Lit windows: sparse, irregular -->
-  <g fill="#f0a259" opacity="0.5">
+  <g fill="#e2a163" opacity="0.5">
     <rect x="278" y="150" width="10" height="14"/><rect x="308" y="182" width="10" height="14"/>
     <rect x="338" y="150" width="10" height="14"/><rect x="278" y="246" width="10" height="14"/>
     <rect x="338" y="278" width="10" height="14"/><rect x="308" y="342" width="10" height="14"/>
@@ -42,16 +42,16 @@
   </g>
 
   <!-- Ground plane -->
-  <rect x="0" y="510" width="1200" height="240" fill="#100d0a"/>
+  <rect x="0" y="510" width="1200" height="240" fill="#050505"/>
 
   <!-- Avenues in one-point perspective -->
-  <g stroke="#382f27" stroke-width="2" fill="none">
+  <g stroke="#282827" stroke-width="2" fill="none">
     <path d="M600 510 L120 750"/>
     <path d="M600 510 L400 750"/>
     <path d="M600 510 L800 750"/>
     <path d="M600 510 L1080 750"/>
   </g>
-  <g stroke="#29221a" stroke-width="2" fill="none">
+  <g stroke="#1b1b1a" stroke-width="2" fill="none">
     <path d="M0 566 H1200"/>
     <path d="M0 622 H1200"/>
     <path d="M0 692 H1200"/>
@@ -63,5 +63,5 @@
   <path d="M0 622 H1200" stroke="url(#fivem-trail)" stroke-width="3" fill="none" opacity="0.45"/>
 
   <!-- Horizon glow -->
-  <rect x="0" y="500" width="1200" height="3" fill="#b8763a" opacity="0.55"/>
+  <rect x="0" y="500" width="1200" height="3" fill="#9c6a33" opacity="0.55"/>
 </svg>

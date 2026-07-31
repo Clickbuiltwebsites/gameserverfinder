@@ -7,9 +7,17 @@ this file explains *why*, so nobody undoes a decision by accident.
 
 ## Genre
 
-**Atmospheric.** Dark canvas, one warm light source, a single warm accent, plain
-technical copy. The audience is players hunting a server, usually at night. The
-aesthetic answers to that, not to a B2B dashboard.
+**Atmospheric, black.** A black canvas carrying nothing, a single tempered amber
+accent, plain technical copy. The audience is players hunting a server, usually
+at night. The aesthetic answers to that, not to a B2B dashboard.
+
+The canvas is bare on purpose. An earlier pass painted two warm radial blooms
+and a grain layer over it; both were removed. A dark page with glow bleeding
+from the corners is the most recognisable generated-landing-page signature there
+is, and the glow was doing work that type, spacing and photography should do. On
+black, the server pictures are the only light in the composition — which is the
+right hierarchy for a directory. If depth is wanted, it belongs in the surface
+ladder, never in a gradient painted over the page.
 
 ## Macrostructure
 
@@ -45,28 +53,40 @@ These are the load-bearing ones. Reverting any of them undoes the redesign.
    padding plus a top padding summed together. Section heads sit 40px from their
    content where the grid gap is 24px, so proximity actually groups.
 
-5. **One light source, no decoration.** Two fixed radial blooms at ≤11% alpha
-   and a 3.5% grain layer. That is the entire canvas treatment. No aurora mesh,
-   no floating orbs, no glassmorphism, no gradient text.
+5. **The canvas is black and carries nothing.** No blooms, no grain, no
+   gradients anywhere on any page — a check across `/`, `/servers`, the detail
+   page and `/submit` returns zero gradient-painted elements. No aurora mesh, no
+   floating orbs, no glassmorphism, no gradient text, no glowing accent.
 
 ## Theme — Midnight
 
-| Token | Value | Role |
-| --- | --- | --- |
-| `--color-paper` | `oklch(15% 0.012 55)` | page, and the bottom of every recess |
-| `--color-paper-2` | `oklch(21% 0.014 55)` | cards, inputs, raised surfaces |
-| `--color-paper-3` | `oklch(26% 0.016 55)` | hover, chips, tag fills |
-| `--color-paper-4` | `oklch(31% 0.016 55)` | highest surface |
-| `--color-rule` | `oklch(31% 0.012 55)` | decorative hairlines, dividers |
-| `--color-rule-2` | `oklch(54% 0.014 55)` | **interactive** borders — tuned for WCAG 1.4.11's 3:1 |
-| `--color-neutral` | `oklch(67% 0.011 55)` | captions; read on paper-3 in card hover |
-| `--color-muted` | `oklch(76% 0.009 55)` | secondary prose |
-| `--color-ink` | `oklch(96% 0.006 55)` | primary text |
-| `--color-accent` | `oklch(76% 0.163 62)` | warm amber, ≤3% of any viewport |
-| `--color-accent-ink` | `oklch(17% 0.035 62)` | text on an accent fill |
+| Token | Value | Renders | Role |
+| --- | --- | --- | --- |
+| `--color-paper` | `oklch(8% 0.002 60)` | `#020201` | the black page, and the floor of every recess |
+| `--color-paper-2` | `oklch(21% 0.006 60)` | `#1a1816` | cards, inputs, raised surfaces |
+| `--color-paper-3` | `oklch(26% 0.007 60)` | `#272321` | hover, chips, tag fills |
+| `--color-paper-4` | `oklch(31% 0.008 60)` | `#332f2c` | highest surface |
+| `--color-rule` | `oklch(29% 0.006 60)` | | decorative hairlines, dividers |
+| `--color-rule-2` | `oklch(55% 0.009 60)` | `#706b67` | **interactive** borders — WCAG 1.4.11's 3:1 |
+| `--color-neutral` | `oklch(66% 0.008 60)` | | captions; read on paper-3 in card hover |
+| `--color-muted` | `oklch(76% 0.006 60)` | | secondary prose |
+| `--color-ink` | `oklch(94% 0.004 60)` | `#edeae8` | primary text — not pure white |
+| `--color-accent` | `oklch(74% 0.125 66)` | `#e09a4d` | tempered amber, ≤3% of any viewport |
+| `--color-accent-ink` | `oklch(14% 0.028 66)` | | text on an accent fill |
 
-Do not darken `--color-rule-2` or `--color-neutral` without re-running the
-contrast check — both are tuned to clear their thresholds with modest headroom.
+Three numbers to re-check after any colour change, because each is tuned to
+clear its threshold with modest headroom:
+
+- **paper-2 against paper = 1.17.** This step is the only thing making a card
+  visible on black. Below roughly 1.12 the cards dissolve into the page.
+- **rule-2 against paper-3 = 3.19.** rule-2 is tuned against the *lightest*
+  surface it ever appears on (the search pill's hover state), not the darkest.
+- **Ink is 94%, not 100%.** Pure white on black smears at small sizes.
+
+The accent's chroma came down from 0.163 to 0.125 when the canvas went black. A
+saturated accent glowing against a black field is the single most template-like
+thing a dark UI can do, and the brief ruled out colours that clash with black.
+The hue is unchanged — the amber is the brand.
 
 ## Typography
 
