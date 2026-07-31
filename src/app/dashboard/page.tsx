@@ -36,7 +36,7 @@ export default async function DashboardPage() {
         <div className="grid grid--wide">
           {listings.map((listing, index) => (
             <div key={listing.id} style={{ display: "grid", gap: "var(--space-xs)" }}>
-              <ServerCard listing={listing} index={Math.min(index, 5)} />
+              <ServerCard listing={listing} index={index} />
               <form action={deleteListingAction}>
                 <input type="hidden" name="id" value={listing.id} />
                 <button type="submit" className="btn btn--danger btn--block">

@@ -7,21 +7,26 @@ import {
 import type { Listing } from "@/lib/types";
 
 /**
- * The tag row every listing carries. Signal tags (PvP, drugs) pair colour with a
- * glyph and a word, so nothing depends on colour alone.
+ * Two registers, not one. Region and playstyle are context a reader skims, so
+ * they sit as quiet monospace metadata. PvP and the FiveM drug economy are the
+ * things someone actually filters on, so they keep a chip — each pairing colour
+ * with a glyph and a word, so nothing depends on colour alone.
  */
 export function ListingTags({ listing, size }: { listing: Listing; size?: "lg" }) {
   const cls = size === "lg" ? "tag tag--lg" : "tag";
+  const metaCls = size === "lg" ? "tag-meta tag-meta--lg" : "tag-meta";
+  const showDrugs = drugsApplies(listing.game) && listing.drugs !== null;
 
   return (
     <ul className="tags">
       <li>
-        <span className={`${cls} tag--region`} title={REGION_LONG[listing.region]}>
-          {REGION_LABEL[listing.region]}
+        <span className={metaCls}>
+          <span title={REGION_LONG[listing.region]}>{REGION_LABEL[listing.region]}</span>
+          <span className="tag-meta__sep" aria-hidden="true">
+            /
+          </span>
+          <span>{PLAYSTYLE_LABEL[listing.playstyle]}</span>
         </span>
-      </li>
-      <li>
-        <span className={cls}>{PLAYSTYLE_LABEL[listing.playstyle]}</span>
       </li>
       <li>
         {listing.pvp ? (
@@ -34,14 +39,14 @@ export function ListingTags({ listing, size }: { listing: Listing; size?: "lg" }
           </span>
         )}
       </li>
-      {drugsApplies(listing.game) && listing.drugs !== null ? (
+      {showDrugs ? (
         <li>
           {listing.drugs ? (
             <span className={`${cls} tag--drugs`}>
-              <span aria-hidden="true">◈</span> Drug economy
+              <span aria-hidden="true">◈</span> Drugs
             </span>
           ) : (
-            <span className={cls}>No drug economy</span>
+            <span className={cls}>No drugs</span>
           )}
         </li>
       ) : null}

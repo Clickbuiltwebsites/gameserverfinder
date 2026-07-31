@@ -22,7 +22,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="hero">
+      <section className="hero reveal" style={{ "--i": 0 } as React.CSSProperties}>
         <div className="shell hero__grid">
           <div>
             <h1 className="hero__title">Four games. Filters that mean something.</h1>
@@ -41,29 +41,31 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Counts, not claims — each one is computed from the listings table. */}
+          {/* Counts, not claims — each one is computed from the listings table.
+              A description list requires dt before dd, and reading order should
+              match the visual order, so the label leads and CSS does the rest. */}
           <dl className="hero__counts">
             <div>
-              <dd className="count__value tabular">{formatPlayers(total)}</dd>
               <dt className="count__label">Servers listed</dt>
+              <dd className="count__value tabular">{formatPlayers(total)}</dd>
             </div>
             <div>
-              <dd className="count__value tabular">{GAMES.length}</dd>
               <dt className="count__label">Games covered</dt>
+              <dd className="count__value tabular">{GAMES.length}</dd>
             </div>
             <div>
-              <dd className="count__value tabular">{formatPlayers(usCount)}</dd>
               <dt className="count__label">US-hosted</dt>
+              <dd className="count__value tabular">{formatPlayers(usCount)}</dd>
             </div>
             <div>
-              <dd className="count__value tabular">{formatPlayers(ukCount)}</dd>
               <dt className="count__label">UK-hosted</dt>
+              <dd className="count__value tabular">{formatPlayers(ukCount)}</dd>
             </div>
           </dl>
         </div>
       </section>
 
-      <section className="shell rail">
+      <section className="shell rail reveal" style={{ "--i": 1 } as React.CSSProperties}>
         <div className="rail__head">
           <h2 className="rail__title">Just listed</h2>
           <Link className="link-arrow" href="/servers">
@@ -81,7 +83,7 @@ export default async function HomePage() {
         )}
       </section>
 
-      <section className="shell rail rail--tight">
+      <section className="shell rail rail--band reveal" style={{ "--i": 2 } as React.CSSProperties}>
         <div className="rail__head">
           <h2 className="rail__title">By game</h2>
           <p className="rail__note">
@@ -102,7 +104,7 @@ export default async function HomePage() {
       </section>
 
       {busiest.length ? (
-        <section className="shell rail">
+        <section className="shell rail reveal" style={{ "--i": 3 } as React.CSSProperties}>
           <div className="rail__head">
             <h2 className="rail__title">Highest average population</h2>
             <Link className="link-arrow" href="/servers?sort=players">

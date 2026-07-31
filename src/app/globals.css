@@ -1,33 +1,90 @@
 @import "tailwindcss";
 @import "../../tokens.css";
 
-/* Hallmark · pre-emit critique: P5 H5 E5 S4 R5 V5
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5
  * genre: atmospheric · macrostructure: Ecosystem Index · theme: Midnight
  * nav: N13 inline ⌘K search pill · footer: Ft5 Statement
- * features: F6 product card grid (ratio 16/10, density 3-up, micro-action "View →")
+ * features: F6 product card grid (ratio 16/10, density 3-up, micro-action: none)
  * section heads: S2 Hanging · CTA: C1 Outlined chip (rect, spacious, arrow)
- * enrichment: none — the server screenshots are the imagery
- * motion: card-lift · stagger-reveal (one-shot) · palette-highlight  [3 primitives]
+ * enrichment: canvas only — one warm bloom + 3.5% grain; the server pictures
+ *   are the imagery and nothing competes with them
+ * motion: page-reveal (one-shot, sections not cards) · media-scale on hover ·
+ *   palette-highlight  [3 primitives]
  * tone: technical · audience: players hunting a server · use: find one, or list yours
+ *
+ * Modernisation pass — the load-bearing decisions, so nobody undoes them by
+ * accident:
+ *   · Surfaces climb by lightness; borders are for interactive edges only. A
+ *     hairline on every box is what made this read as a grid of containers.
+ *   · The media well is DARKER than the card face. A recess lit brighter than
+ *     its surround was the single most dated thing on the page.
+ *   · --text-ui (13px) is control text. --text-sm (14px) is reading text.
+ *     Do not put prose back on 13px/350 — that is the dashboard idiom.
+ *   · Every vertical seam is owned by the block below it, never summed.
+ *   · The pill radius on .chip and .nav__search is deliberate, not drift:
+ *     filter chips and a search field are the two places a pill still reads
+ *     current. Everything else is sm (controls) or md (containers).
  */
 
 html {
   overflow-x: clip;
   scroll-behavior: smooth;
   color-scheme: dark;
+  background: var(--color-paper);
 }
 
 body {
   overflow-x: clip;
   margin: 0;
-  background: var(--color-paper);
+  background: transparent;
   color: var(--color-ink);
   font-family: var(--font-body);
   font-size: var(--text-base);
-  font-weight: 350;
+  /* 400, not 350. Reading copy was simultaneously the smallest, thinnest and
+     lowest-contrast type on the page; the large ledes keep 350 below, where the
+     size carries the lightness. */
+  font-weight: 400;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* --- Canvas -----------------------------------------------------------------
+   The page had no light source at all, which is what made a dark theme read
+   flat. This is one warm bloom high on the canvas plus a second, weaker one
+   opposite it — fixed, so they behave like room lighting rather than a decal
+   that scrolls with the content. Two stops, low alpha, no animation: the
+   opposite of an aurora mesh.
+   -------------------------------------------------------------------------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 34rem at 15% -10%, oklch(76% 0.163 62 / 0.11), transparent 62%),
+    radial-gradient(44rem 26rem at 95% 0%, oklch(64% 0.12 28 / 0.05), transparent 64%);
+}
+
+/* Fine grain. A print-derived texture that stops large dark areas from banding;
+   at 3.5% it is felt rather than seen, and it does not date the way an effect
+   would. Hidden from anyone who has asked for less motion or more contrast. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 170px 170px;
+}
+
+@media (prefers-contrast: more) {
+  body::after {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -49,11 +106,22 @@ h4 {
   font-family: var(--font-display);
   font-style: normal;
   font-weight: 700;
-  letter-spacing: -0.028em;
-  line-height: 1.08;
-  overflow-wrap: anywhere;
+  letter-spacing: var(--track-heading);
+  line-height: 1.06;
+  /* break-word, not anywhere: a long unbroken server name still can't overflow,
+     but the browser stops hyphen-free mid-word breaks when there is room. */
+  overflow-wrap: break-word;
+  text-wrap: balance;
   min-width: 0;
   margin: 0;
+}
+
+/* 22px subheads inherit display leading from the rule above, which reads
+   cramped once they wrap. These two do wrap. */
+.game-card__name,
+.empty__title {
+  line-height: 1.24;
+  letter-spacing: -0.018em;
 }
 
 p {
@@ -77,7 +145,7 @@ img {
 :focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-sm);
 }
 
 ::selection {
@@ -113,6 +181,8 @@ img {
 }
 
 .page {
+  position: relative;
+  z-index: 1;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -185,7 +255,7 @@ img {
 .wordmark__mark {
   width: 0.5rem;
   height: 0.5rem;
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-sm);
   background: var(--color-accent);
   transform: rotate(45deg);
   flex: none;
@@ -211,7 +281,7 @@ img {
   border-radius: var(--radius-pill);
   color: var(--color-neutral);
   font-family: var(--font-body);
-  font-size: var(--text-sm);
+  font-size: var(--text-ui);
   cursor: pointer;
   transition:
     background-color var(--dur-short) var(--ease-out),
@@ -239,7 +309,7 @@ img {
   line-height: 1;
   padding: 0.25rem 0.375rem;
   border: var(--rule-hair) solid var(--color-rule-2);
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-sm);
   color: var(--color-muted);
   background: var(--color-paper);
   white-space: nowrap;
@@ -262,7 +332,7 @@ img {
   min-height: 40px;
   padding-inline: var(--space-sm);
   border-radius: var(--radius-sm);
-  font-size: var(--text-sm);
+  font-size: var(--text-ui);
   font-weight: 500;
   white-space: nowrap;
   color: var(--color-muted);
@@ -349,7 +419,7 @@ img {
   background: transparent;
   color: var(--color-ink);
   font-family: var(--font-body);
-  font-size: var(--text-sm);
+  font-size: var(--text-ui);
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
@@ -436,7 +506,7 @@ img {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2xs);
-  font-size: var(--text-sm);
+  font-size: var(--text-ui);
   font-weight: 500;
   white-space: nowrap;
   color: var(--color-muted);
@@ -469,9 +539,11 @@ img {
    Hero — Ecosystem Index opening: positioning statement, then surfaces
    ======================================================================== */
 
+/* Every vertical seam is owned by the block below it, never summed from a
+   bottom padding plus a top padding — that is what made the rhythm read as
+   arithmetic rather than intent. */
 .hero {
-  padding-block: clamp(2.5rem, 6vw, 5rem) var(--space-xl);
-  border-bottom: var(--rule-hair) solid var(--color-rule);
+  padding-block: clamp(3rem, 8vw, 6.5rem) 0;
 }
 
 .hero__grid {
@@ -482,57 +554,72 @@ img {
 
 @media (min-width: 60rem) {
   .hero__grid {
-    grid-template-columns: 1.35fr 0.8fr;
+    grid-template-columns: 1.5fr 0.72fr;
     gap: var(--space-2xl);
   }
 }
 
 .hero__title {
   font-size: var(--text-display-s);
-  max-width: 15ch;
+  letter-spacing: var(--track-display);
+  line-height: 0.98;
+  max-width: 14ch;
 }
 
 .hero__lede {
-  margin-block-start: var(--space-md);
-  max-width: 54ch;
+  margin-block-start: var(--space-lg);
+  max-width: 52ch;
   color: var(--color-muted);
   font-size: var(--text-md);
-  line-height: 1.6;
+  font-weight: 350;
+  line-height: 1.62;
+  text-wrap: pretty;
 }
 
 .hero__actions {
-  margin-block-start: var(--space-lg);
+  margin-block-start: var(--space-xl);
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-sm);
 }
 
-/* Counts, not claims — every number here is computed from the listings table. */
+/* Counts, not claims — every number here is computed from the listings table.
+   Previously a bordered 2×2 panel, which read as a dashboard widget bolted to
+   the hero. Now a rule-separated ledger: same four numbers, no box. */
+/* A ledger, not a widget: one column of full-width rows, label left and figure
+   right, reusing the .spec idiom from the detail page. The earlier two-column
+   version drew a rule across the container and a rule under each cell, so every
+   hairline died in the 24px column gap. */
 .hero__counts {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-md);
-  padding: var(--space-md);
-  border: var(--rule-hair) solid var(--color-rule);
-  border-radius: var(--radius-md);
-  background: var(--color-paper-2);
+  max-width: 26rem;
+  border-top: var(--rule-hair) solid var(--color-rule);
+}
+
+.hero__counts > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-block: var(--space-sm);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
 }
 
 .count__value {
   font-family: var(--font-display);
   font-size: var(--text-xl);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-weight: 800;
+  letter-spacing: var(--track-display);
   font-variant-numeric: tabular-nums;
   line-height: 1;
   color: var(--color-ink);
+  margin: 0;
 }
 
 .count__label {
-  display: block;
-  margin-block-start: var(--space-2xs);
+  font-family: var(--font-mono);
   font-size: var(--text-xs);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--color-neutral);
 }
@@ -541,31 +628,46 @@ img {
    S2 · Hanging section heads — heading floats, no rule, no eyebrow
    ======================================================================== */
 
+/* Uneven on purpose. Every rail carrying identical padding is what made the
+   page scroll like a spreadsheet; the "by game" band is deliberately tighter
+   and sits on its own surface so the rhythm has a middle. */
 .rail {
-  padding-block: var(--space-xl);
+  padding-block: clamp(3.5rem, 7vw, 6rem) 0;
 }
 
 .rail--tight {
-  padding-block: var(--space-lg) var(--space-xl);
+  padding-block: var(--space-xl) 0;
 }
 
+/* The banded rail keeps its rules and a deliberately tighter middle, so the
+   page has a compressed passage between two open ones. */
+.rail--band {
+  margin-block-start: clamp(3.5rem, 7vw, 6rem);
+  padding-block: var(--space-xl);
+  border-block: var(--rule-hair) solid var(--color-rule);
+}
+
+/* 40px, where the grid gap is 24px. When a section title sits exactly as far
+   from its cards as the cards sit from each other, proximity groups nothing. */
 .rail__head {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
   gap: var(--space-sm);
-  margin-block-end: var(--space-lg);
+  margin-block-end: var(--space-xl);
 }
 
 .rail__title {
-  font-size: var(--text-xl);
+  font-size: var(--text-2xl);
+  letter-spacing: var(--track-display);
 }
 
 .rail__note {
   color: var(--color-neutral);
   font-size: var(--text-sm);
   max-width: 46ch;
+  text-wrap: pretty;
 }
 
 /* ===========================================================================
@@ -578,41 +680,64 @@ img {
   gap: var(--space-lg);
 }
 
-/* Browse sits beside a filter rail, so its tracks are narrower than the
-   home page's in order to still pack 3-up on a desktop and 2-up on a tablet. */
+/* Full-width use (the dashboard) matches the home page at 3-up. */
 .grid--wide {
-  grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
 }
 
+/* Beside the 15rem filter rail the track is only 832px, where a 20rem minimum
+   packs just two cards — wider than home's, which made the page users spend
+   most of their time on the least dense one. 15.5rem restores 3-up there. */
+.browse .grid--wide {
+  grid-template-columns: repeat(auto-fill, minmax(min(15.5rem, 100%), 1fr));
+}
+
+/* No resting border. The card is a lighter surface than the page, which is how
+   dark interfaces signal elevation; a hairline on every box was what made the
+   page read as a grid of containers rather than a grid of servers. */
 .card {
   position: relative;
   display: flex;
   flex-direction: column;
   min-width: 0;
   background: var(--color-paper-2);
-  border: var(--rule-hair) solid var(--color-rule);
   border-radius: var(--radius-md);
   overflow: hidden;
-  transition:
-    border-color var(--dur-short) var(--ease-out),
-    transform var(--dur-short) var(--ease-out);
+  transition: background-color var(--dur-short) var(--ease-out);
 }
 
+/* One hover signal, and it belongs to the media: the picture is the thing the
+   reader is deciding on, so the picture is what responds. */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-rule-2);
+    background: var(--color-paper-3);
+  }
+  .card:hover .card__media img {
+    transform: scale(1.02);
   }
 }
 
-.card:focus-within {
-  border-color: var(--color-rule-2);
+/* :has(:focus-visible), not :focus-within — browsers focus a link on mouse-down,
+   and :focus-within would leave this ring painted after an ordinary click. The
+   ring belongs to the card because .card__link::after makes the whole tile the
+   hit area, so the link's own ring would trace invisible text instead. */
+.card:has(.card__link:focus-visible) {
+  background: var(--color-paper-3);
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
 }
 
+.card .card__link:focus-visible {
+  outline: none;
+}
+
+/* The media well is a recess, so it is DARKER than the card face. It was
+   paper-3 on a paper-2 card, which lit the hole brighter than the plane around
+   it and made a listing with no screenshot the loudest tile in the row. */
 .card__media {
   position: relative;
   aspect-ratio: 16 / 10;
-  background: var(--color-paper-3);
+  background: var(--color-paper);
   overflow: hidden;
 }
 
@@ -620,6 +745,16 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform var(--dur-long) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card__media img {
+    transition: none;
+  }
+  .card:hover .card__media img {
+    transform: none;
+  }
 }
 
 /* Listings with no screenshot get a built placeholder, not a broken frame. */
@@ -631,7 +766,7 @@ img {
   background:
     repeating-linear-gradient(
       135deg,
-      var(--color-paper-3) 0 10px,
+      var(--color-paper) 0 10px,
       var(--color-paper-2) 10px 20px
     );
 }
@@ -639,7 +774,7 @@ img {
 .card__fallback span {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  letter-spacing: 0.14em;
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--color-neutral);
 }
@@ -650,13 +785,13 @@ img {
   inset-inline-start: var(--space-xs);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  letter-spacing: 0.06em;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
   padding: 0.25rem 0.5rem;
-  border-radius: var(--radius-xs);
-  background: color-mix(in oklch, var(--color-paper) 82%, transparent);
-  backdrop-filter: blur(6px);
-  color: var(--color-ink-2);
-  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-sm);
+  background: color-mix(in oklch, var(--color-paper) 78%, transparent);
+  backdrop-filter: blur(8px);
+  color: var(--color-ink);
 }
 
 .card__body {
@@ -696,45 +831,75 @@ img {
   margin-block-start: auto;
   padding-block-start: var(--space-sm);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-sm);
-  border-top: var(--rule-hair) solid var(--color-rule);
+  align-items: baseline;
+  gap: var(--space-xs);
 }
 
+/* The population is the card's one number, so it gets display weight rather
+   than sitting in the same small type as everything else. */
 .card__players {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: var(--track-heading);
   font-variant-numeric: tabular-nums;
-  color: var(--color-ink-2);
+  line-height: 1;
+  color: var(--color-ink);
 }
 
-.card__players small {
+.card__players-max {
   color: var(--color-neutral);
+  font-weight: 600;
+}
+
+.card__players-label {
+  font-family: var(--font-mono);
   font-size: var(--text-xs);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--color-neutral);
 }
 
 /* ===========================================================================
    Tags — region / playstyle / PvP / drugs
    ======================================================================== */
 
+/* Region and playstyle are context; PvP and the drug economy are the decisions.
+   Four identically-weighted pills flattened that difference, so the context now
+   sits as quiet monospace metadata and only the signals keep a chip. */
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2xs);
+  align-items: center;
+  gap: var(--space-2xs) var(--space-xs);
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
+.tag-meta {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--color-neutral);
+  white-space: nowrap;
+}
+
+.tag-meta__sep {
+  margin-inline: 0.45rem;
+  opacity: 0.45;
+}
+
 .tag {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.3rem;
   padding: 0.1875rem 0.5rem;
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-sm);
   background: var(--color-paper-3);
-  border: var(--rule-hair) solid var(--color-rule);
   color: var(--color-ink-2);
   font-size: var(--text-xs);
   font-weight: 500;
@@ -742,33 +907,30 @@ img {
   white-space: nowrap;
 }
 
-.tag--region {
-  font-family: var(--font-mono);
-  letter-spacing: 0.06em;
-}
-
 /* Signal tags carry a glyph as well as colour — never colour alone. */
 .tag--pvp {
   color: var(--color-danger);
-  border-color: color-mix(in oklch, var(--color-danger) 45%, transparent);
-  background: color-mix(in oklch, var(--color-danger) 12%, var(--color-paper-2));
+  background: color-mix(in oklch, var(--color-danger) 15%, var(--color-paper-2));
 }
 
 .tag--drugs {
   color: var(--color-accent);
-  border-color: color-mix(in oklch, var(--color-accent) 45%, transparent);
-  background: color-mix(in oklch, var(--color-accent) 12%, var(--color-paper-2));
+  background: color-mix(in oklch, var(--color-accent) 15%, var(--color-paper-2));
 }
 
 .tag--pve {
   color: var(--color-ok);
-  border-color: color-mix(in oklch, var(--color-ok) 40%, transparent);
-  background: color-mix(in oklch, var(--color-ok) 10%, var(--color-paper-2));
+  background: color-mix(in oklch, var(--color-ok) 13%, var(--color-paper-2));
 }
 
 .tag--lg {
   font-size: var(--text-sm);
   padding: 0.3125rem 0.625rem;
+}
+
+.tag-meta--lg {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
 }
 
 /* ===========================================================================
@@ -788,18 +950,14 @@ img {
   gap: var(--space-2xs);
   padding: var(--space-md);
   min-height: 8.5rem;
-  border: var(--rule-hair) solid var(--color-rule);
   border-radius: var(--radius-md);
   background: var(--color-paper-2);
-  transition:
-    border-color var(--dur-short) var(--ease-out),
-    transform var(--dur-short) var(--ease-out);
+  transition: background-color var(--dur-short) var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .game-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-accent-dim);
+    background: var(--color-paper-3);
   }
 }
 
@@ -818,7 +976,7 @@ img {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--color-muted);
 }
@@ -863,7 +1021,7 @@ img {
   margin-block-end: var(--space-xs);
   font-size: var(--text-xs);
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--color-neutral);
 }
@@ -885,13 +1043,14 @@ img {
   background: var(--color-paper-2);
   color: var(--color-muted);
   font-family: var(--font-body);
-  font-size: var(--text-sm);
+  font-size: var(--text-ui);
   white-space: nowrap;
   cursor: pointer;
   transition:
     background-color var(--dur-short) var(--ease-out),
     border-color var(--dur-short) var(--ease-out),
-    color var(--dur-short) var(--ease-out);
+    color var(--dur-short) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
 }
 
 @media (hover: hover) {
@@ -901,12 +1060,29 @@ img {
   }
 }
 
+.chip:active {
+  transform: translateY(1px);
+}
+
 .chip[aria-pressed="true"],
 .chip[data-active="true"] {
   background: var(--color-accent);
   border-color: var(--color-accent);
   color: var(--color-accent-ink);
   font-weight: 600;
+}
+
+/* A selected chip is the primary "remove this filter" target, and it had no
+   hover response at all: the selected rule matched at the same specificity as
+   .chip:hover and came later, so it won both properties. These need the extra
+   specificity to answer the pointer. */
+@media (hover: hover) {
+  .chip[aria-pressed="true"]:hover,
+  .chip[data-active="true"]:hover {
+    background: var(--color-focus);
+    border-color: var(--color-focus);
+    color: var(--color-accent-ink);
+  }
 }
 
 .chip__count {
@@ -928,7 +1104,7 @@ img {
   align-items: baseline;
   justify-content: space-between;
   gap: var(--space-sm);
-  margin-block-end: var(--space-lg);
+  margin-block-end: var(--space-xl);
 }
 
 .results__count {
@@ -936,6 +1112,70 @@ img {
   font-size: var(--text-sm);
   font-variant-numeric: tabular-nums;
   color: var(--color-neutral);
+}
+
+/* ===========================================================================
+   Skeletons — shown while a filtered page is fetched
+   ======================================================================== */
+
+.skeleton {
+  display: block;
+  border-radius: var(--radius-sm);
+  background: var(--color-paper-3);
+  /* A slow pulse, not a sweeping shimmer: it reads as "working" without
+     pulling the eye across the screen. */
+  animation: skeleton-pulse 1.6s var(--ease-in-out) infinite;
+}
+
+.skeleton-group {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.skeleton--label {
+  width: 5rem;
+  height: 0.75rem;
+}
+
+.skeleton--chip {
+  width: 4.5rem;
+  height: 34px;
+  border-radius: var(--radius-pill);
+}
+
+.skeleton--title {
+  width: 12rem;
+  height: 2rem;
+}
+
+.skeleton--media {
+  border-radius: 0;
+  animation-delay: 120ms;
+}
+
+.skeleton--line {
+  height: 0.85rem;
+  margin-block: var(--space-2xs);
+}
+
+.skeleton--short {
+  width: 60%;
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
 }
 
 /* ===========================================================================
@@ -960,6 +1200,7 @@ img {
   color: var(--color-muted);
   font-size: var(--text-sm);
   max-width: 52ch;
+  text-wrap: pretty;
 }
 
 /* ===========================================================================
@@ -979,7 +1220,7 @@ img {
 }
 
 .field__label {
-  font-size: var(--text-sm);
+  font-size: var(--text-ui);
   font-weight: 600;
   color: var(--color-ink-2);
 }
@@ -1123,7 +1364,7 @@ img {
 }
 
 .switch__title {
-  font-size: var(--text-sm);
+  font-size: var(--text-ui);
   font-weight: 600;
   color: var(--color-ink);
 }
@@ -1178,7 +1419,7 @@ img {
 }
 
 .picker__title {
-  font-size: var(--text-sm);
+  font-size: var(--text-ui);
   font-weight: 600;
   color: var(--color-ink);
 }
@@ -1235,7 +1476,7 @@ img {
   border-radius: var(--radius-md);
   overflow: hidden;
   border: var(--rule-hair) solid var(--color-rule);
-  background: var(--color-paper-3);
+  background: var(--color-paper);
 }
 
 .upload__preview img {
@@ -1273,12 +1514,15 @@ img {
   padding-block: var(--space-xl) var(--space-2xl);
 }
 
+/* Capped. At the 1136px measure a bare 21/9 renders a 487px banner and pushes
+   the server's name off a 1366×768 laptop screen — the picture outranking the
+   thing it is a picture of. object-fit recrops, so it just becomes ~3.7:1. */
 .detail__hero {
   aspect-ratio: 21 / 9;
+  max-block-size: min(38vh, 19rem);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--color-paper-2);
-  border: var(--rule-hair) solid var(--color-rule);
+  background: var(--color-paper);
   margin-block-end: var(--space-lg);
 }
 
@@ -1310,7 +1554,9 @@ img {
   margin-block-start: var(--space-xs);
   color: var(--color-muted);
   font-size: var(--text-md);
+  font-weight: 350;
   max-width: 60ch;
+  text-wrap: pretty;
 }
 
 .prose {
@@ -1445,7 +1691,7 @@ img {
   padding: var(--space-xs) var(--space-sm) var(--space-2xs);
   font-size: var(--text-xs);
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--color-neutral);
 }
@@ -1461,16 +1707,33 @@ img {
   background: transparent;
   color: var(--color-ink-2);
   font-family: var(--font-body);
-  font-size: var(--text-sm);
+  font-size: var(--text-ui);
   text-align: start;
   cursor: pointer;
   min-height: 40px;
-  transition: background-color var(--dur-micro) var(--ease-out);
+  transition:
+    background-color var(--dur-micro) var(--ease-out),
+    box-shadow var(--dur-micro) var(--ease-out);
 }
 
+/* The selected row answers "where does Enter go?", and focus stays in the input,
+   so this wash was the only signal — at ~1.35:1 against the palette surface it
+   failed the 3:1 that a state indicator owes. The accent bar carries it now, and
+   matches the selected-state language the radio pickers already use. */
 .palette__item[data-selected="true"] {
-  background: var(--color-paper-4);
+  background: color-mix(in oklch, var(--color-accent) 22%, var(--color-paper-3));
   color: var(--color-ink);
+  /* The bar is what actually clears 3:1; the tint carries it at a glance so the
+     state does not depend on two pixels alone. */
+  box-shadow: inset 3px 0 0 var(--color-accent);
+}
+
+@media (forced-colors: active) {
+  .palette__item[data-selected="true"] {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
 }
 
 .palette__item-meta {
@@ -1576,7 +1839,7 @@ img {
   gap: var(--space-sm);
   color: var(--color-neutral);
   font-size: var(--text-xs);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
 }
 

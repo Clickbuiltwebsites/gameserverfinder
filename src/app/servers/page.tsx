@@ -57,7 +57,7 @@ export default async function ServersPage({
         {listings.length ? (
           <div className="grid grid--wide">
             {listings.map((listing, index) => (
-              <ServerCard key={listing.id} listing={listing} index={Math.min(index, 5)} />
+              <ServerCard key={listing.id} listing={listing} index={index} />
             ))}
           </div>
         ) : (

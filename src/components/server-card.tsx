@@ -3,9 +3,14 @@ import { ListingTags } from "./tags";
 import { GAME_LABEL, formatPlayers } from "@/lib/taxonomy";
 import type { Listing } from "@/lib/types";
 
+/** `index` now only decides image loading priority — it no longer staggers. */
 export function ServerCard({ listing, index = 0 }: { listing: Listing; index?: number }) {
   return (
-    <article className="card reveal" style={{ "--i": index } as React.CSSProperties}>
+    // Cards no longer animate individually. Staggering every tile meant a browse
+    // page of eighteen took 730ms to settle, and the index cap collapsed
+    // everything past the sixth into one identical delay — a slab, not a stagger.
+    // The page entrance now runs once, on the sections.
+    <article className="card">
       <div className="card__media">
         {listing.imageUrl ? (
           /* Covers come from user uploads on arbitrary hosts, so this stays a
@@ -35,15 +40,16 @@ export function ServerCard({ listing, index = 0 }: { listing: Listing; index?: n
 
         <ListingTags listing={listing} />
 
+        {/* The whole card is the link, so a decorative "View →" was a second
+            affordance that did nothing. The population number owns the footer. */}
         <div className="card__foot">
           <span className="card__players">
             {formatPlayers(listing.avgPlayers)}
-            {listing.maxPlayers ? ` / ${formatPlayers(listing.maxPlayers)}` : ""}{" "}
-            <small>avg players</small>
+            {listing.maxPlayers ? (
+              <span className="card__players-max">/{formatPlayers(listing.maxPlayers)}</span>
+            ) : null}
           </span>
-          <span className="link-arrow" aria-hidden="true">
-            View →
-          </span>
+          <small className="card__players-label">avg players</small>
         </div>
       </div>
     </article>
