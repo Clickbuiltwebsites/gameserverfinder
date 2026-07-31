@@ -376,6 +376,13 @@ img {
   .nav__link {
     min-height: 44px;
   }
+  /* The pill carries a fixed 40px height for the mouse layout, so unlike
+     .nav__link it has no min-height to raise — set the height outright. On a
+     phone it is the widest tap target on the page and was the only control
+     still landing under 44px. */
+  .nav__search {
+    height: 44px;
+  }
 }
 
 /* ===========================================================================

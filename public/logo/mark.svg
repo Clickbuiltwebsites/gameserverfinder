@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="GameServerFinder">
+  <title>GameServerFinder</title>
+  <!-- The brand mark: the rotated rounded square already used in the site nav
+       (.wordmark__mark) and on both Open Graph cards (OgMark).
+
+       Pure geometry — no text, no font dependency, so this file renders
+       identically everywhere and scales to any size. Background is transparent.
+
+       Fill is the accent token, oklch(74% 0.125 66), which resolves to #e09a4d.
+       Corner radius is 18% of the side, matching the OG mark's 4/22.
+
+       Note: no double-hyphen anywhere in this comment — XML forbids it, and an
+       SVG carrying one is rejected outright when loaded via <img>. -->
+  <rect x="12" y="12" width="40" height="40" rx="7.2" fill="#e09a4d" transform="rotate(45 32 32)"/>
+</svg>
